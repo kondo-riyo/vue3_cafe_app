@@ -15,9 +15,9 @@
   color: #2c3e50;
 }
   .app {
-    background-color: skyblue;
+    // background-color: skyblue;
     width: 100%;
-    height: 20%;
+    // height: 20%;
   }
 
 // #nav {
