@@ -17,8 +17,11 @@
                 </div>
             </div>
             <div class="main__body-content">
-                <div>cafe &amp; Donuts</div>
-                <div>どんぐりカフェ</div>
+                <!-- <div>cafe &amp; Donuts</div>
+                <div>どんぐりカフェ</div> -->
+                <div>
+                    <img src="../../assets/logo_shop_name2.png" class="main__body-content--img"/>
+                </div>
                 <div>〒160 - 0022 <br/>東京都新宿区新宿4-3-25<br/> TOKYU REIT新宿ビル8F</div>
                 <div>TEL. 01-2345-6789 </div>
                 <div>OPEN. 11:00 ~ 15:00 (火曜定休日)</div>
@@ -37,7 +40,7 @@ export default defineComponent({
 <style lang="scss">
 @import '../../css/style.scss';
 .main {
-    background-color: $base_of;
+    background-color: $base_cream;
     // height: 35rem;
     height: 50rem;
     display: flex;
@@ -97,12 +100,24 @@ export default defineComponent({
 }
 .main__body-content {
     text-align: start;
-    color: $base_pink_brown;
-    background-image: url(../../assets/back_cream.png);
+    color: $base_cream;
+    font-weight: 600;
+    background-image: url(../../assets/back_brown.png);
     background-size: cover;
-    margin: 3rem 0 0 0;
-    // padding: 50px 0 50px 100px;
-    padding: 3rem 0 3rem 6rem;
+    // width: 100%;
+    width: 80%;
+    height: auto;
+
+    margin: 3rem 0 0 -2rem;
+    padding: 3rem 3rem 6rem 6rem;
+    // padding: 10px 10px 20px 20px;
+    // padding: 1rem;
+    div {
+        margin: 0 0 0.5rem 0;
+    }
+}
+.main__body-content--img {
+    width: 70%;
 }
 
 .main__feature {
@@ -112,12 +127,13 @@ export default defineComponent({
     // background-position:50%;
     background-size: cover;
     position: relative;
-    margin: 0 0 2rem 0;
+    // margin: 0 0 2rem 0;
+    padding: 0 0 10rem 0;
 
 }
 .main__feature::after {
     content: '';
-    background-image: url(../../assets/back_home_main.png);
+    background-image: url(../../assets/back_home_main_cream.png);
     background-size:cover;
     // background-color: rgba(0, 0, 0, 0.638);
     position: absolute;
