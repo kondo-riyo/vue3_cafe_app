@@ -82,6 +82,8 @@ export default defineComponent({
     }
   },
   mounted(){
+
+    //Google Map-----------------------------------------------------
     // let timer = setInterval(() => {
     //   if(window.google){
     //     clearInterval(timer);
@@ -91,19 +93,49 @@ export default defineComponent({
     //     });       
     //   }
     // },500)  
-    let timer = setInterval(() => {
-      if (window.google) {
-        clearInterval(timer);
-        const map = new window.google.maps.Map(this.$refs.map, {
-          center: this.myLatLng,
-          zoom: 16,
-        });
-        new window.google.maps.Marker({
-          position: this.myLatLng,
-          map,
-        });
-      }
-    }, 500);  }
+
+    // let timer = setInterval(() => {
+    //   if (window.google) {
+    //     clearInterval(timer);
+    //     const map = new window.google.maps.Map(this.$refs.map, {
+    //       center: this.myLatLng,
+    //       zoom: 16,
+    //     });
+    //     new window.google.maps.Marker({
+    //       position: this.myLatLng,
+    //       map,
+    //     });
+    //   }
+    // }, 500);  
+    // },
+
+    //calendar--------------------------------------------------------
+    // let currentDate = () => {
+// const today = new Date();
+
+console.log(
+ [...Array(3)].map((_, index) => {
+  const today = new Date()
+  return new Date(
+    today.getFullYear(),
+    today.getMonth() - index,
+    today.getDate()
+  )
+})
+  );
+
+//  [...Array(12)].map((_, index) => {
+//   const today = new Date()
+//   return new Date(
+//     today.getFullYear(),
+//     today.getMonth() - index,
+//     today.getDate()
+//   )
+// });
+},
+
+// console.log(currentDate);
+
 });
 </script>
 <style lang="scss">
