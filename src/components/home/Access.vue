@@ -21,7 +21,7 @@
             </div>
             <div class="access__foot-reserve">
                 <div class="access__foot-reserve--head">
-                    <div>ー 席の予約ができます ー</div>
+                    <div>ー 席の予約はこちら ー</div>
                     <span>
                         ※1. ケーキの予約は電話にてお受けいたします<br/>
                         ※2. 予約の変更・キャンセルの際は、お手数ですが、電話にてお申し付けください
@@ -29,39 +29,23 @@
                 </div>
                 <div class="access__foot-reserve--body">
                     <!-- カレンダー -->
-                    <!-- xx年xx月を表示 -->
-                    <div class="calendar__title">2022年 2月</div>
 
                     <!-- 月移動ボタンを表示 -->
-                    <div class="calendar__btn">
+                    <div class="calendar__head">
                         <div>
-                            <button>＜</button>
+                            <button class="calendar__head-btn">＜</button>
                         </div>
+                        <div class="calendar__head-title">2022年 2月</div>
                         <div>
-                            <button>＞</button>
+                            <button class="calendar__head-btn">＞</button>
                         </div>
                     </div>
 
                     <!-- カレンダー表示 -->
-                    <div class="calendar__body">
-                        <!-- <div v-for="n in 32" :key="n" class="calendar__body-tile"> -->
-                        <div class="calendar__body-tile">
-                            <!-- <div v-if="n===1" class="calendar__body-tile--first">{{n}}</div>
-                            <div v-else class="">{{n}}</div> -->
-                            <div class="calendar__body-tile--first">1</div>
-                            <div>2</div>
-                            <div>3</div>
-                            <div>4</div>
-                            <div>5</div>
-                            <div>6</div>
-                            <div>7</div>
-                            <div>8</div>
-                            <div>9</div>
-                            <div>10</div>
-                        </div>
-                    </div>
+                    <div class="calendar__body"></div>
                 </div>
             </div>
+            <!-- <div>{{currentDate}}</div> -->
         </div>
     </div>
 </template>
@@ -84,58 +68,95 @@ export default defineComponent({
   mounted(){
 
     //Google Map-----------------------------------------------------
-    // let timer = setInterval(() => {
-    //   if(window.google){
-    //     clearInterval(timer);
-    //     this.map = new window.google.maps.Map(this.$refs.map, {
-    //       center: {lat: 35.69398953161943, lng: 139.7075547373426},
-    //       zoom: 16
-    //     });       
-    //   }
-    // },500)  
-
-    // let timer = setInterval(() => {
-    //   if (window.google) {
-    //     clearInterval(timer);
-    //     const map = new window.google.maps.Map(this.$refs.map, {
-    //       center: this.myLatLng,
-    //       zoom: 16,
-    //     });
-    //     new window.google.maps.Marker({
-    //       position: this.myLatLng,
-    //       map,
-    //     });
-    //   }
-    // }, 500);  
+    let timer = setInterval(() => {
+      if (window.google) {
+        clearInterval(timer);
+        const map = new window.google.maps.Map(this.$refs.map, {
+          center: this.myLatLng,
+          zoom: 16,
+        });
+        new window.google.maps.Marker({
+          position: this.myLatLng,
+          map,
+        });
+      }
+    }, 500);  
     // },
 
     //calendar--------------------------------------------------------
-    // let currentDate = () => {
-// const today = new Date();
+    let calendarHTML = ''
+    const weeks = ['日', '月', '火', '水', '木', '金', '土']
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const startDate = new Date(year, month - 1, 1) // 月の最初の日を取得
+    const endDate = new Date(year, month,  0) // 月の最後の日を取得
+    const endDayCount = endDate.getDate() // 月の末日
+    const startDay = startDate.getDay() // 月の最初の日の曜日を取得
+    const lastMonthEndDate = new Date(year, month - 1, 0) // 前月の最後の日の情報
+    const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
+    let dayCount = 1 // 日にちのカウント
+    console.log(month)
+    // let newThreeMonth = 
+    //     [...Array(3)].map((_, index) => {
+    //     return new Date(
+    //         today.getFullYear(),
+    //         today.getMonth() + index,
+    //         // today.getDate()
+    //     )
+    //     })
+    // console.log(newThreeMonth)
+    // calendarHTML += '<div class="calendar__body-tile">' + newThreeMonth[0].getFullYear() +'/'+ newThreeMonth[0].getMonth()
+    calendarHTML += '<table class="calendar__body--main">'
 
-console.log(
- [...Array(3)].map((_, index) => {
-  const today = new Date()
-  return new Date(
-    today.getFullYear(),
-    today.getMonth() - index,
-    today.getDate()
-  )
-})
-  );
+    //曜日の行-------
+    for (let i = 0; i < weeks.length; i++) {
+    calendarHTML += '<th>' + weeks[i] + '</th>'
+    }
 
-//  [...Array(12)].map((_, index) => {
-//   const today = new Date()
-//   return new Date(
-//     today.getFullYear(),
-//     today.getMonth() - index,
-//     today.getDate()
-//   )
-// });
-},
+    //日付の行-------
+    // for (let w = 0; w < 6; w++) {
+    // calendarHTML += '<tr>'
 
-// console.log(currentDate);
+    for (let w = 0; w < 6; w++) {
+    calendarHTML += '<tr>'
 
+    for (let d = 0; d < 7; d++) {
+        if (w == 0 && d < startDay) {
+            // 1行目で1日の曜日の前
+            let num = lastMonthendDayCount - startDay + d + 1
+            calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+        } else if (dayCount > endDayCount) {
+            // 末尾の日数を超えた
+            let num = dayCount - endDayCount
+            calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+            dayCount++
+        // } else if ( dayCount===date.getDate() ) {
+
+        }else {
+            if( dayCount===date.getDate() ) {
+                calendarHTML += '<td class="calendar__body--today">'
+            } else {
+                calendarHTML += '<td>'
+            }
+            calendarHTML += '<div>'+ dayCount +'</div>'
+            if( dayCount >= date.getDate() ) {
+                calendarHTML += '<div>○</div>'
+            }
+            calendarHTML += '</td>'
+            dayCount++
+        }
+    }
+    calendarHTML += '</tr>'
+    }
+    // }
+
+    calendarHTML += '</table>'
+    
+    // eslint-disable-next-line
+    document.querySelector('.calendar__body')!.innerHTML = calendarHTML
+
+    },
 });
 </script>
 <style lang="scss">
@@ -192,7 +213,7 @@ console.log(
 }
 .access__foot-map--img {
     width: 100%;
-    height: 500px;
+    height: 550px;
 }
 .access__foot-reserve {
      width: 40%;
@@ -205,6 +226,7 @@ console.log(
     color: white;
     text-align: start;
     padding: 0.3rem;
+    transition: 0.5s;
     div {
         font-weight: 700;
         font-size: x-large;
@@ -217,6 +239,10 @@ console.log(
         text-align: start;
     }
 }
+.access__foot-reserve--head:hover {
+    background-color: $base_pink_brown-30;
+    color: $base_brown;
+}
 
 .access__foot-reserve--body {
 
@@ -224,19 +250,70 @@ console.log(
 
 .calendar__body {
     width: 100%;
-    margin: 1rem;
-    background-color: $base_cream;
+    color: $base_pink_brown;
+    // margin: 0.3rem;
+    // background-color: $base_cream;
 
     // display: grid;
     // grid-template-columns: repeat(7, 50px);
 }
-.calendar__body-tile {
-    border: 2px solid black;
-    display: grid;
-    grid-template-columns: repeat(7, 50px);
+// .calendar__body-tile {
+//     color: $base_brown
+//     // border: 2px solid black;
+//     // display: grid;
+//     // grid-template-columns: repeat(7, 50px);
+// }
+// .calendar__body-tile--first {
+//   grid-column-start: 3;
+//   background-color: red;
+// }
+
+.calendar__head {
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    margin: 1rem 3rem;
+    color: $base_pink_brown;
 }
-.calendar__body-tile--first {
-  grid-column-start: 3;
-  background-color: red;
+.calendar__head-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    // border: 1px solid $base_pink_brown;
+    // background-color: transparent;
+    border-radius: 9999px;
+    color: $base_pink_brown;
+    font-weight: 700;
+    background-color: $base_pink_brown-30;
+    transition: 1s;
+}
+.calendar__head-btn:hover {
+    border: 2px solid $base_pink_brown;
+    background-color: transparent;
+}
+.calendar__head-title {
+    font-weight: 600;
+    font-size: x-large;
+}
+.calendar__body--main {
+    width: 350px;
+    height: 350px;
+    // height: auto;
+    margin: 0 auto;
+}
+table {
+    border-spacing: 0;
+}
+td {
+    width: 50px;
+    height: 50px;
+    border: 1px solid $base_pink_brown;
+}
+.calendar__body--disabled {
+    color: #ccc;
+    // background-color: rgba(0, 0, 0, 0.029);
+}
+.calendar__body--today {
+    background-color: $base_cream;
 }
 </style>
