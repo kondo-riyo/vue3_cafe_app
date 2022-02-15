@@ -33,11 +33,11 @@
                     <!-- 月移動ボタンを表示 -->
                     <div class="calendar__head">
                         <div>
-                            <button class="calendar__head-btn">＜</button>
+                            <button v-show="nowMonth < month" @click="changeMonth(-1)" class="calendar__head-btn">＜</button>
                         </div>
-                        <div class="calendar__head-title">2022年 2月</div>
+                        <div class="calendar__head-title">{{year}}年 {{month}}月</div>
                         <div>
-                            <button class="calendar__head-btn">＞</button>
+                            <button v-show="nowMonth+2 > month" @click="changeMonth(1)" class="calendar__head-btn">＞</button>
                         </div>
                     </div>
 
@@ -63,6 +63,14 @@ export default defineComponent({
   data(){
     return {
       myLatLng:{lat: 35.69398953161943, lng: 139.7075547373426},
+      //カレンダー----------------
+      calendarHTML: '',
+      weeks : ['日', '月', '火', '水', '木', '金', '土'],
+    //   date: ,
+      year: 0,
+      nowMonth: 0, 
+      month: 0
+
     }
   },
   mounted(){
@@ -84,79 +92,140 @@ export default defineComponent({
     // },
 
     //calendar--------------------------------------------------------
-    let calendarHTML = ''
-    const weeks = ['日', '月', '火', '水', '木', '金', '土']
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const startDate = new Date(year, month - 1, 1) // 月の最初の日を取得
-    const endDate = new Date(year, month,  0) // 月の最後の日を取得
+    this.calendarHTML = ''
+    // const weeks = ['日', '月', '火', '水', '木', '金', '土']
+    const date = new Date() //object
+    this.year = date.getFullYear() //number
+    this.nowMonth = date.getMonth() + 1 //number
+    this.month = this.nowMonth
+    const startDate = new Date(this.year, this.month - 1, 1) // 月の最初の日を取得
+    const endDate = new Date(this.year, this.month,  0) // 月の最後の日を取得
     const endDayCount = endDate.getDate() // 月の末日
     const startDay = startDate.getDay() // 月の最初の日の曜日を取得
-    const lastMonthEndDate = new Date(year, month - 1, 0) // 前月の最後の日の情報
+    const lastMonthEndDate = new Date(this.year, this.month - 1, 0) // 前月の最後の日の情報
     const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
     let dayCount = 1 // 日にちのカウント
-    console.log(month)
-    // let newThreeMonth = 
-    //     [...Array(3)].map((_, index) => {
-    //     return new Date(
-    //         today.getFullYear(),
-    //         today.getMonth() + index,
-    //         // today.getDate()
-    //     )
-    //     })
-    // console.log(newThreeMonth)
-    // calendarHTML += '<div class="calendar__body-tile">' + newThreeMonth[0].getFullYear() +'/'+ newThreeMonth[0].getMonth()
-    calendarHTML += '<table class="calendar__body--main">'
-
+    this.calendarHTML += '<table class="calendar__body--main">'
+        // console.log(date.getDay())
     //曜日の行-------
-    for (let i = 0; i < weeks.length; i++) {
-    calendarHTML += '<th>' + weeks[i] + '</th>'
+    for (let i = 0; i < this.weeks.length; i++) {
+    this.calendarHTML += '<th>' + this.weeks[i] + '</th>'
     }
 
     //日付の行-------
-    // for (let w = 0; w < 6; w++) {
-    // calendarHTML += '<tr>'
-
     for (let w = 0; w < 6; w++) {
-    calendarHTML += '<tr>'
-
+    this.calendarHTML += '<tr>'
+                // console.log(w)
     for (let d = 0; d < 7; d++) {
+        console.log(d)
         if (w == 0 && d < startDay) {
             // 1行目で1日の曜日の前
             let num = lastMonthendDayCount - startDay + d + 1
-            calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+            this.calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
         } else if (dayCount > endDayCount) {
             // 末尾の日数を超えた
             let num = dayCount - endDayCount
-            calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+            this.calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
             dayCount++
-        // } else if ( dayCount===date.getDate() ) {
 
         }else {
-            if( dayCount===date.getDate() ) {
-                calendarHTML += '<td class="calendar__body--today">'
-            } else {
-                calendarHTML += '<td>'
+            //今日----------
+            if( dayCount===date.getDate() && this.month === this.nowMonth ) {
+                this.calendarHTML += '<td class="calendar__body--today">'
+                this.calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
+            } else if( d === 2 ) {
+                this.calendarHTML += '<td class="calendar__body--disabled">' + dayCount + '</td>'
+            }else {
+                //明日以降-----------------
+                this.calendarHTML += '<td>'
+                // this.calendarHTML += '<td class="calendar__body--event">'
+                this.calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
+                if( dayCount > date.getDate() || this.month != this.nowMonth) {
+                //予約状況の確認-------------
+                this.calendarHTML += '<div>○</div>'
+                }
             }
-            calendarHTML += '<div>'+ dayCount +'</div>'
-            if( dayCount >= date.getDate() ) {
-                calendarHTML += '<div>○</div>'
-            }
-            calendarHTML += '</td>'
+            this.calendarHTML += '</td>'
             dayCount++
         }
     }
-    calendarHTML += '</tr>'
+    this.calendarHTML += '</tr>'
     }
-    // }
-
-    calendarHTML += '</table>'
-    
+    this.calendarHTML += '</table>'
     // eslint-disable-next-line
-    document.querySelector('.calendar__body')!.innerHTML = calendarHTML
+    document.querySelector('.calendar__body')!.innerHTML = this.calendarHTML
 
     },
+    methods: {
+        changeMonth(index:number) {
+            this.month = this.month+index
+            this.calendarHTML = ''
+            const date = new Date() //object
+            const startDate = new Date(this.year, this.month - 1, 1) // 月の最初の日を取得
+            const endDate = new Date(this.year, this.month,  0) // 月の最後の日を取得
+            const endDayCount = endDate.getDate() // 月の末日
+            const startDay = startDate.getDay() // 月の最初の日の曜日を取得
+            const lastMonthEndDate = new Date(this.year, this.month - 1, 0) // 前月の最後の日の情報
+            const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
+            let dayCount = 1 // 日にちのカウント
+            this.calendarHTML += '<table class="calendar__body--main">'
+
+            //曜日の行-------
+            for (let i = 0; i < this.weeks.length; i++) {
+            this.calendarHTML += '<th>' + this.weeks[i] + '</th>'
+            }
+
+            //日付の行-------
+            for (let w = 0; w < 6; w++) {
+            this.calendarHTML += '<tr>'
+            for (let d = 0; d < 7; d++) {
+                if (w == 0 && d < startDay) {
+                    // 1行目で1日の曜日の前
+                    let num = lastMonthendDayCount - startDay + d + 1
+                    this.calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+                } else if (dayCount > endDayCount) {
+                    // 末尾の日数を超えた
+                    let num = dayCount - endDayCount
+                    this.calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+                    dayCount++
+
+                }else {
+                    //今日----------
+                    if( dayCount===date.getDate() && this.month === this.nowMonth) {
+                        this.calendarHTML += '<td class="calendar__body--today">'
+                        this.calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
+                    } else {
+                        //明日以降-----------------
+                        this.calendarHTML += '<td>'
+                        // this.calendarHTML += '<td class="calendar__body--event">'
+                        this.calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
+                        if( dayCount > date.getDate() || this.month != this.nowMonth) {
+                        //予約状況の確認-------------
+                        this.calendarHTML += '<div>○</div>'
+                        }
+                    }
+
+                    this.calendarHTML += '</td>'
+                    dayCount++
+                }
+            }
+            this.calendarHTML += '</tr>'
+            }
+            this.calendarHTML += '</table>'
+            // eslint-disable-next-line
+            document.querySelector('.calendar__body')!.innerHTML = this.calendarHTML
+            // if( index === -1 ) {
+            // }
+            // this.month = this.month+index
+            // console.log(this.month)
+        },
+        clickDate() {
+            console.log('click')
+        }
+        // nextMonth() {
+        //     console.log('next')
+        // }
+    }
 });
 </script>
 <style lang="scss">
@@ -300,6 +369,8 @@ export default defineComponent({
     height: 350px;
     // height: auto;
     margin: 0 auto;
+    // border: 2px solid $base_pink_brown;
+    // border-radius: 20px;
 }
 table {
     border-spacing: 0;
@@ -309,7 +380,19 @@ td {
     height: 50px;
     border: 1px solid $base_pink_brown;
 }
-.calendar__body--disabled {
+td:first-child {
+    color: red;
+}
+td:last-child {
+    color: royalblue;
+}
+td:nth-child(3) {
+    color: #ccc;
+}
+// .calendar__body--dayCount:first-child  {
+//     // background-color: rgba(255, 0, 0, 0.2);
+// }
+td.calendar__body--disabled {
     color: #ccc;
     // background-color: rgba(0, 0, 0, 0.029);
 }
