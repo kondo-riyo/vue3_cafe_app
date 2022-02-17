@@ -32,19 +32,20 @@
                     <calendar/>
                 </div>
             </div>
+            <button @click="sendReserve">クリック</button>
         </div>
-        <Reserve 
+        <!-- <Reserve 
             :orderInfo="reserveInfo"
             v-show="showReserve"
             @close="closeReserve"
         >
-        </Reserve>
+        </Reserve> -->
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 import calendar from '../organisms/calendar.vue';
-import Reserve from '../templates/Reserve.vue';
+// import Reserve from '../templates/Reserve.vue';
 declare global {
      // eslint-disable-next-line
   interface Window { google: any; }
@@ -55,7 +56,7 @@ export default defineComponent({
   name: 'Access',
   components: {
       calendar,
-      Reserve
+    //   Reserve
   },
   data(){
     return {
@@ -89,6 +90,9 @@ export default defineComponent({
         },
         ReserveOpen() {
             this.showReserve = true
+        },
+        sendReserve() {
+            this.$router.push('/Reserve')
         }
     //     clickDate() {
     //         console.log('click')

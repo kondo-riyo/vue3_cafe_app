@@ -44,7 +44,7 @@ export default defineComponent({
     const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
     let dayCount = 1 // 日にちのカウント
     this.calendarHTML += '<table class="calendar__body--main">'
-        // console.log(date.getDay())
+        console.log(date.getDay())
     //曜日の行-------
     for (let i = 0; i < this.weeks.length; i++) {
     this.calendarHTML += '<th>' + this.weeks[i] + '</th>'
@@ -189,6 +189,8 @@ export default defineComponent({
 .calendar__body {
     width: 100%;
     color: $base_pink_brown;
+    // background-color: $base_of;
+    // border-radius: 20px;
 }
 
 .calendar__head {
