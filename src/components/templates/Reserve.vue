@@ -1,7 +1,9 @@
 <template>
     <div id="overlay" @click.self="$emit('close')">
         <div id="content" class="reserve" >
-            <calendar class="reserve-calendar"/>
+            <div class="reserve-calendar">
+                <calendar/>
+            </div>
             <div class="reserve-form">入力</div>
         </div>
     </div>
@@ -40,11 +42,11 @@ export default defineComponent({
 //   justify-content: flex-end;
 }
 #content {
-  z-index: 2;
+  z-index: 9998;
   width: 100%;
 //   max-width: 600px;
 //   min-width: 350px;
-  height: 70%;
+  height: 80%;
 //   top: 100px;
   bottom: 0;
 //   padding: 0;
@@ -72,24 +74,26 @@ export default defineComponent({
 
 .reserve {
     width: 100%;
-    display: grid;
-    // grid-template-rows: 300px auto ;
-    grid-template-columns: 300px auto;
+    display: flex;
+    // grid-template-rows: 800px ;
+    // grid-template-columns: 350px auto;
     // background-color: $base_pink_brown;
     background-image: url(../../assets/back_reserve.png);
     background-size: cover;
     
 }
 .reserve-calendar {
-    grid-column: 1/2;
+    // grid-column: 1/2;
     // grid-column: auto;
-    width: 50%;
-    height: 50%;
+    // width: 100%;
+    // height: 50%;
+    margin: 30px 20px;
+    padding: 10px;
     background-color: $base_of;
-    
+    border-radius: 20px;
 }
 .reserve-form {
-    grid-column: 2/2;
+    // grid-column: 2/2;
     // grid-column: auto;
 }
 </style>
