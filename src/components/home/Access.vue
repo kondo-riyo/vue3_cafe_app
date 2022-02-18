@@ -34,18 +34,19 @@
             </div>
             <button @click="sendReserve">クリック</button>
         </div>
-        <!-- <Reserve 
+        <Reserve 
             :orderInfo="reserveInfo"
             v-show="showReserve"
             @close="closeReserve"
         >
-        </Reserve> -->
+        </Reserve>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 import calendar from '../organisms/calendar.vue';
-// import Reserve from '../templates/Reserve.vue';
+import Reserve from '../templates/Reserve.vue';
 declare global {
      // eslint-disable-next-line
   interface Window { google: any; }
@@ -56,7 +57,45 @@ export default defineComponent({
   name: 'Access',
   components: {
       calendar,
-    //   Reserve
+      Reserve
+  },
+  setup() {
+    const store = useStore()
+
+    //data----------------------
+    // let data = ref({
+    //   myLatLng:{lat: 35.69398953161943, lng: 139.7075547373426},
+    //   showReserve: false,
+    //   reserveInfo: '',
+    // })
+
+    // const mapRef = ref(Map)
+    // //mounted-------------------
+    // onMounted(() => {
+    //     //Google Map-----------------------------------------------------
+    //     // const refType = $refs(null);
+    //     let timer = setInterval(() => {
+    //     if (window.google) {
+    //         clearInterval(timer);
+    //         const map = new window.google.maps.Map(mapRef.value.map, {
+    //         center: data.value.myLatLng,
+    //         zoom: 16,
+    //         });
+    //         new window.google.maps.Marker({
+    //         position: data.value.myLatLng,
+    //         map,
+    //         });
+    //     }
+    //     }, 500);  
+    // })
+
+    store.dispatch('calendarAct')
+    // console.log(calendarFromStore)
+    // })
+    // return{
+    //     mapRef
+    // }
+
   },
   data(){
     return {
@@ -83,6 +122,7 @@ export default defineComponent({
       }
     }, 500);  
 
+    // this.$store.dispatch('calendarAct')
     },
     methods: {
         closeReserve() {
