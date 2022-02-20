@@ -13,7 +13,8 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 export default defineComponent({
     name: 'calendar',
     data() {
@@ -28,6 +29,29 @@ export default defineComponent({
 
         }
     },
+    setup() {
+    const store = useStore()
+
+    let data = ref({
+    //   calendarHTML: '',
+      weeks : ['日', '月', '火', '水', '木', '金', '土'],
+    //   date: ,
+      year: 0,
+      nowMonth: 0, 
+      month: 0
+    })
+    const calendarHTML = computed(() => store.state.calendarHTML)
+    onMounted(()=> {
+    const date = new Date() //object
+    data.value.year = date.getFullYear() //number
+    data.value.nowMonth = date.getMonth() + 1 //number
+    data.value.month = data.value.nowMonth
+    })
+    // document.querySelector('.calendar__body')!.innerHTML = this.calendarHTML
+    return {
+        calendarHTML: 
+    }
+    }, 
     mounted() {
     // //calendar--------------------------------------------------------
     // this.calendarHTML = ''
@@ -36,6 +60,7 @@ export default defineComponent({
     this.year = date.getFullYear() //number
     this.nowMonth = date.getMonth() + 1 //number
     this.month = this.nowMonth
+    
     // const startDate = new Date(this.year, this.month - 1, 1) // 月の最初の日を取得
     // const endDate = new Date(this.year, this.month,  0) // 月の最後の日を取得
     // const endDayCount = endDate.getDate() // 月の末日
@@ -103,7 +128,7 @@ export default defineComponent({
     // this.calendarHTML += '</tr>'
     // }
     // this.calendarHTML += '</table>'
-        
+
     // eslint-disable-next-line
     document.querySelector('.calendar__body')!.innerHTML = this.calendarHTML
 

@@ -43,7 +43,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 import calendar from '../organisms/calendar.vue';
 import Reserve from '../templates/Reserve.vue';
@@ -90,11 +90,15 @@ export default defineComponent({
     // })
 
     store.dispatch('calendarAct')
+    // const calendarHTML = 
     // console.log(calendarFromStore)
     // })
     // return{
     //     mapRef
     // }
+    return {
+        calendarHTML: computed(() => store.state.calendarHTML)
+    }
 
   },
   data(){
