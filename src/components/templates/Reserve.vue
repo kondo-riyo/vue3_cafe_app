@@ -4,18 +4,22 @@
             <div class="reserve-calendar">
                 <calendar/>
             </div>
-            <div class="reserve-form">入力</div>
+            <div class="reserve-reserveform">
+              <reserveForm/>
+            </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 import calendar from '../organisms/calendar.vue';
+import reserveForm from '../organisms/reserveForm.vue';
 
 export default defineComponent({
     name: 'Reserve',
     components: {
-        calendar
+        calendar,
+        reserveForm
     },
     
 })
@@ -87,13 +91,17 @@ export default defineComponent({
     // grid-column: auto;
     // width: 100%;
     // height: 50%;
+    width: 40%;
     margin: 30px 20px;
     padding: 10px;
     background-color: $base_of;
     border-radius: 20px;
 }
-.reserve-form {
-    // grid-column: 2/2;
-    // grid-column: auto;
+.reserve-reserveform {
+    width: 60%;
+    margin: 30px 20px 3px 20px;
+    // padding: 10px;
+    background-color: $base_of;
+    border-radius: 20px;
 }
 </style>
