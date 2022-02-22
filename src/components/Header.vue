@@ -18,7 +18,7 @@ export default defineComponent({
 <style lang="scss">
 @import '../css/style.scss';
 .header {
-    background-color: $base_of;
+    background-color: $base_cream;
     height: 100px;
 
     display: flex;

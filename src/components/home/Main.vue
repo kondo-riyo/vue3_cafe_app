@@ -6,8 +6,8 @@
         </div>
         <div class="main__border"></div>
         <div class="main__body">
-            <div class="main__body-logo">
-                <div>
+            <!-- <div class="main__body-logo"> -->
+                <div class="main__body-logo--logo">
                     <img src="../../assets/logo_circle.png" class="main__body-logo--img"/>
                 </div>
                 <div class="main__body-logo--menu">
@@ -15,16 +15,18 @@
                     <div>NEWS</div>
                     <div>ACCESS</div>
                 </div>
-            </div>
+            <!-- </div> -->
             <div class="main__body-content">
                 <!-- <div>cafe &amp; Donuts</div>
                 <div>どんぐりカフェ</div> -->
-                <div>
-                    <img src="../../assets/logo_shop_name2.png" class="main__body-content--img"/>
+                <div class="main__body-content-back">
+                    <div>
+                        <img src="../../assets/logo_shop_name2.png" class="main__body-content--img"/>
+                    </div>
+                    <div>〒160 - 0022 <br/>東京都新宿区新宿4-3-25<br/> TOKYU REIT新宿ビル8F</div>
+                    <div>TEL. 01-2345-6789 </div>
+                    <div>OPEN. 11:00 ~ 15:00 (火曜定休日)</div>
                 </div>
-                <div>〒160 - 0022 <br/>東京都新宿区新宿4-3-25<br/> TOKYU REIT新宿ビル8F</div>
-                <div>TEL. 01-2345-6789 </div>
-                <div>OPEN. 11:00 ~ 15:00 (火曜定休日)</div>
             </div>
         </div>
         <div class="main__feature">
@@ -85,33 +87,52 @@ export default defineComponent({
 .main__body {
     margin: 3rem 0 0 0;
     width: 40%;
+    display: grid;
+    grid-template: 
+    'logo menu'
+    'content content';
 
 }
-.main__body-logo {
-    display: flex;
+// .main__body-logo {
+//     display: flex;
+// }
+.ain__body-logo--logo {
+    grid-area: logo;
 }
 .main__body-logo--img {
-    width: 17rem;
+    width: 100%;
     padding: 0 0 0 1rem;
 }
 .main__body-logo--menu {
     font-weight: bold;
     color: $base_pink_brown;
+    grid-area: menu;
 }
 .main__body-content {
+    grid-area: content;
+    // z-index: 1;
     text-align: start;
     color: $base_cream;
     font-weight: 600;
-    background-image: url(../../assets/back_brown.png);
-    background-size: cover;
+    // background-image: url(../../assets/back_brown.png);
+    // background-size: cover;
     // width: 100%;
-    width: 80%;
+    width: 100%;
     height: auto;
 
-    margin: 3rem 0 0 -2rem;
+    // margin: 3rem 0 0 -2rem;
+    // padding: 3rem 3rem 6rem 6rem;
+    // div {
+    //     margin: 0 0 0.5rem 0;
+    // }
+}
+.main__body-content-back {
+    background-image: url(../../assets/back_brown.png);
+    // background-size: contain;
+    background-size: 100% 100%;
+    // width: 100%;
+    // height: auto;
     padding: 3rem 3rem 6rem 6rem;
-    // padding: 10px 10px 20px 20px;
-    // padding: 1rem;
     div {
         margin: 0 0 0.5rem 0;
     }
@@ -120,28 +141,76 @@ export default defineComponent({
     width: 70%;
 }
 
+// .main__feature {
+//     width: 40%;
+//     height: 80%;
+//     background-image: url(../../assets/coffee-people.jpg);
+//     background-size: cover;
+//     position: relative;
+//     padding: 0 0 10rem 0;
+
+// }
+// .main__feature::after {
+//     content: '';
+//     background-image: url(../../assets/back_home_main_cream.png);
+//     background-size: 100% 100%;
+//     position: absolute;
+//     left: 0;
+//   right: 0;
+//   top: 0;
+//   bottom: 0;
+// }
+
 .main__feature {
     width: 40%;
     height: 80%;
-    background-image: url(../../assets/coffee-people.jpg);
-    // background-position:50%;
-    background-size: cover;
+    overflow: hidden;
     position: relative;
-    // margin: 0 0 2rem 0;
-    padding: 0 0 10rem 0;
+    z-index: 1;
+}
+.main__feature:before,
+.main__feature:after {
+   content: "";
+   z-index: -1;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+}
+.main__feature:before {
+  width: 500%; /* (n+1)*100% */
+  background: url(../../assets/coffee-people.jpg);
+  background-position: 75% top, 50% top, 25% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
+  background-size:  20% auto; /* 100/(n+1)% */
+  animation: slide 20s ease-in-out infinite;
 
 }
-.main__feature::after {
-    content: '';
-    background-image: url(../../assets/back_home_main_cream.png);
-    background-size:cover;
-    // background-color: rgba(0, 0, 0, 0.638);
-    position: absolute;
-    left: 0;
+.main__feature:after {
   right: 0;
-  top: 0;
-  bottom: 0;
-    // height: 240px;
+//   background:rgba(0, 0, 0, .25);
+  background:url(../../assets/back_home_main_cream.png);
+      background-size: 100% 100%;
 
 }
+@keyframes slide {
+  0%, 20% {
+    transform: translate3d(0,0,0);
+  }
+  25%, 45% {
+    transform: translate3d(-20%,0,0);
+     /* -1/n+1 * 100% */
+  }
+  50%, 70% {
+    transform: translate3d(-40%,0,0);
+  }
+  75%, 95% {
+    transform: translate3d(-60%,0,0);   
+  }
+  100% {
+    transform: translate3d(-80%,0,0);
+    /* -n/n+1 * 100% */
+    animation-timing-function: steps(1, end);
+  }
+}
+
 </style>
