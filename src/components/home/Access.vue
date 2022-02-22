@@ -133,6 +133,8 @@ export default defineComponent({
             this.showReserve = false
         },
         ReserveOpen() {
+            this.reserveInfo = this.calendarHTML
+            console.log(this.reserveInfo)
             this.showReserve = true
         },
         sendReserve() {

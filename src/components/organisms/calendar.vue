@@ -10,6 +10,7 @@
             </div>
         </div>
         <div class="calendar__body"></div>
+        <!-- {{reserveInfo}} -->
     </div>
 </template>
 <script lang="ts">
@@ -17,6 +18,7 @@ import { defineComponent, computed, ref } from 'vue';
 import { useStore } from 'vuex';
 export default defineComponent({
     name: 'calendar',
+    // props: [ 'reserveInfo' ],
     data() {
         return {
       //カレンダー----------------
@@ -31,7 +33,6 @@ export default defineComponent({
     },
     setup() {
     const store = useStore()
-
     let data = ref({
     //   calendarHTML: '',
       weeks : ['日', '月', '火', '水', '木', '金', '土'],

@@ -82,17 +82,21 @@ export default defineComponent({
 @mixin reserve-form__body-form($width) {
     color: $base_pink_brown;
     font-weight: 500;
+    div {
+        font-size: small;
+    }
     input {
-        background-color: $base_pink_brown-30;
+        background-color: lighten($base_pink_brown, 30%);
         border: 0;
         width: $width;
         height: 1.7rem;
         border-radius: 5px;
-        color: white;
+        color: $base_brown;
+        font-size: medium;
         // margin: 0 0.5rem;
-    }
     &:focus {
-        border:0;
+        outline: none;
+    }
     }
 }
 .reserve-form__body-time {
@@ -118,13 +122,20 @@ export default defineComponent({
 .reserve-form__body-note {
     color: $base_pink_brown;
     font-weight: 500;
+    div {
+        font-size: small;
+    }
     textarea {
-        background-color: $base_pink_brown-30;
+        background-color: lighten($base_pink_brown, 30%);
         border: 0;
-        // width: $width;
+        width: 80%;
         // height: 1.7rem;
         border-radius: 5px;
-        color: white;
+        color: $base_brown;
+        font-size: medium;
+        &:focus {
+            outline: none;
+        }
     }
     // @include reserve-form__body-form;
     grid-area: note;
