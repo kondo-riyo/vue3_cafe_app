@@ -17,15 +17,15 @@
                 </div>
             <!-- </div> -->
             <div class="main__body-content">
-                <!-- <div>cafe &amp; Donuts</div>
-                <div>どんぐりカフェ</div> -->
                 <div class="main__body-content-back">
-                    <div>
+                    <!-- <div> -->
                         <img src="../../assets/logo_shop_name2.png" class="main__body-content--img"/>
+                    <!-- </div> -->
+                    <div>
+                        <div>〒160 - 0022 <br/>東京都新宿区新宿4-3-25<br/> TOKYU REIT新宿ビル8F</div>
+                        <div>TEL. 01-2345-6789 </div>
+                        <div>OPEN. 11:00 ~ 15:00 (火曜定休日)</div>
                     </div>
-                    <div>〒160 - 0022 <br/>東京都新宿区新宿4-3-25<br/> TOKYU REIT新宿ビル8F</div>
-                    <div>TEL. 01-2345-6789 </div>
-                    <div>OPEN. 11:00 ~ 15:00 (火曜定休日)</div>
                 </div>
             </div>
         </div>
@@ -44,9 +44,9 @@ export default defineComponent({
 .main {
     background-color: $base_cream;
     // height: 35rem;
-    height: 50rem;
+    height: 60rem;
     display: flex;
-    padding: 2rem 0 0 0;
+    padding: 2rem 0 ;
 }
 
 //左---------------
@@ -77,36 +77,62 @@ export default defineComponent({
     transform: rotate(180deg);
 
     //位置調整------------------------
-    margin: 5rem 0 0 1rem ;
+    margin: 20rem 0 0 1rem ;
 }
 .main__border {
-    width: 5%;
+    width: 2%;
     border-left: 1px solid $base_pink_brown;
 }
 //中央-------------
 .main__body {
-    margin: 3rem 0 0 0;
-    width: 40%;
+    // margin: 3rem 0 0 0;
+    width: 43%;
     display: grid;
     grid-template: 
-    'logo menu'
-    'content content';
+    'logo menu' 40%
+    'content content'60%/
+    65% 35%;
+    // align-items: flex-end;
 
 }
 // .main__body-logo {
 //     display: flex;
 // }
-.ain__body-logo--logo {
+.main__body-logo--logo {
     grid-area: logo;
+    height: 100%;
+    // margin: 2rem 0 0 0 ;
+    display: flex;
+    // align-items: flex-end;
+    // justify-content: center;
+    // align-content: center;
+    align-items: center;
 }
 .main__body-logo--img {
     width: 100%;
-    padding: 0 0 0 1rem;
+    margin:auto 0;
+    // bottom: 0;
+    // align-items: center;
+    // justify-items: center;
+    // justify-content: center;
+    // height: auto;
+    // padding: 0 0 0 0.5rem;
 }
 .main__body-logo--menu {
     font-weight: bold;
     color: $base_pink_brown;
     grid-area: menu;
+    display: flex;
+    flex-direction: column;
+    // margin: auto 0;
+    // justify-content: end;
+    div {
+        font-weight: 700;
+        font-size: xx-large;
+        text-align: start;
+        margin: auto 0.5rem;
+        // align-items: stretch;
+    }
 }
 .main__body-content {
     grid-area: content;
@@ -132,13 +158,21 @@ export default defineComponent({
     background-size: 100% 100%;
     // width: 100%;
     // height: auto;
-    padding: 3rem 3rem 6rem 6rem;
+    padding: 3rem 3rem 4rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     div {
-        margin: 0 0 0.5rem 0;
+        div{
+            margin: 0.3rem auto;
+            text-align: start;
+        }
     }
 }
 .main__body-content--img {
-    width: 70%;
+    width: 85%;
+    margin: 0 0 0.5rem 0;
+    // margin: 0 auto;
 }
 
 // .main__feature {
@@ -162,11 +196,12 @@ export default defineComponent({
 // }
 
 .main__feature {
-    width: 40%;
-    height: 80%;
+    width: 50%;
+    height: 100%;
     overflow: hidden;
     position: relative;
     z-index: 1;
+    margin: 1rem 0 0 0;
 }
 .main__feature:before,
 .main__feature:after {
@@ -179,9 +214,15 @@ export default defineComponent({
 }
 .main__feature:before {
   width: 500%; /* (n+1)*100% */
-  background: url(../../assets/coffee-people.jpg);
+  background: url(../../assets/coffee-people.jpg) no-repeat,
+            url(../../assets/shop-image2.jpg) no-repeat,
+            url(../../assets/shop-image3.jpg) no-repeat,
+            // url(../../assets/shop-image4.jpg) no-repeat,
+            url(../../assets/shop-image5.jpg) repeat-x;
   background-position: 75% top, 50% top, 25% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
+//   background-position: 80% top, 60% top, 40% top, 20% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
   background-size:  20% auto; /* 100/(n+1)% */
+//   background-size:  16.6666667% auto; /* 100/(n+1)% */
   animation: slide 20s ease-in-out infinite;
 
 }
@@ -189,7 +230,7 @@ export default defineComponent({
   right: 0;
 //   background:rgba(0, 0, 0, .25);
   background:url(../../assets/back_home_main_cream.png);
-      background-size: 100% 100%;
+  background-size: 100% auto;
 
 }
 @keyframes slide {
@@ -211,6 +252,27 @@ export default defineComponent({
     /* -n/n+1 * 100% */
     animation-timing-function: steps(1, end);
   }
+//   0%, 16.66667% {
+//     transform: translate3d(0,0,0);
+//   }
+//   20%, 36.66667% {
+//     transform: translate3d(-16.6%,0,0);
+//   }
+//   40%, 56.66667% {
+//     transform: translate3d(-33.333%,0,0);
+//      /* -1/n+1 * 100% */
+//   }
+//   60%, 76.66667% {
+//     transform: translate3d(-50%,0,0);   
+//   }
+//   80%, 96.66667% {
+//     transform: translate3d(-66.6666%,0,0);   
+//   }
+//   100% {
+//     transform: translate3d(-83.333%,0,0);
+//     /* -n/n+1 * 100% */
+//     animation-timing-function: steps(1, end);
+//   }
 }
 
 </style>
