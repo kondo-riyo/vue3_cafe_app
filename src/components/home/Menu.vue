@@ -11,8 +11,21 @@
         </div>
         <!-- スライダー -->
         <!-- <div class="css-slider">
-
         </div> -->
+        <div class="menu__slider">
+          <div>
+            <img src="../../assets/menu_donuts.png"/>
+          </div>
+          <div>
+            <img src="../../assets/menu_lunch.jpg"/>
+          </div>
+          <div>
+            <img src="../../assets/menu_coffee.png"/>
+          </div>
+          <div>
+            <img src="../../assets/menu_sweet.jpg"/>
+          </div>
+        </div>
         <div class="menu__category">
             <span>ドーナッツ</span>
             <span>・</span>
@@ -39,7 +52,7 @@ export default defineComponent({
 @import '../../css/style.scss';
 .menu {
     background-color: $base_cream;
-    height: 40rem;
+    // height: 40rem;
 }
 
 .menu__title {
@@ -75,7 +88,7 @@ export default defineComponent({
 .menu__feature--img {
     width: 60%;
     height: 21rem;
-    background-image: url(../../assets/sweet.jpg);
+    background-image: url(../../assets/menu_sweet.jpg);
     background-size: cover;
     position: relative;
 }
@@ -124,16 +137,16 @@ export default defineComponent({
    bottom: 0;
    left: 0;
 }
-.css-slider:before {
-  width: 500%; /* (n+1)*100% */
-  background: url(../../assets/menu_donuts.webp) no-repeat,
-     url(../../assets/menu_lunch.jpg) no-repeat, 
-     url(../../assets/menu_coffee.webp) no-repeat,
-     url(../../assets/sweet.jpg) repeat-x;
-  background-position: 75% top, 50% top, 25% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
-  background-size:  20% auto; /* 100/(n+1)% */
-  animation: slide 20s ease-in-out infinite;
-}
+// .css-slider:before {
+//   width: 500%; /* (n+1)*100% */
+//   background: url(../../assets/menu_donuts.webp) no-repeat,
+//      url(../../assets/menu_lunch.jpg) no-repeat, 
+//      url(../../assets/menu_coffee.png) no-repeat,
+//      url(../../assets/sweet.jpg) repeat-x;
+//   background-position: 75% top, 50% top, 25% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
+//   background-size:  20% auto; /* 100/(n+1)% */
+//   animation: slide 20s ease-in-out infinite;
+// }
 .css-slider:after {
   right: 0;
 //   background:rgba(0, 0, 0, .25);
@@ -158,5 +171,12 @@ export default defineComponent({
     /* -n/n+1 * 100% */
     animation-timing-function: steps(1, end);
   }
+}
+
+
+//スライダー2/24
+.menu__slider {
+  display: flex;
+  width: 70%;
 }
 </style>
