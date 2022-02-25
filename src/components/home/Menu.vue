@@ -3,37 +3,42 @@
         <div class="menu__title">〜 Menu 〜</div>
         <div class="menu__feature">
             <div class="menu__feature--text-left">癒しの時間。</div>
-            <div class="menu__feature--img">
-                <!-- <img src="../../assets/back_menu.png" /> -->
-            </div>
-            <div class="menu__feature--text-rigth">のんびり過ごす、</div>
-            <div class="menu__feature--empty"></div>
-        </div>
         <!-- スライダー -->
         <!-- <div class="css-slider">
         </div> -->
-        <div class="menu__slider">
-          <div>
-            <img src="../../assets/menu_donuts.png"/>
+        <div class="menu__container">
+          <div class="menu__slider" :style="{ left: currentLeft }">
+            <div class="menu__slide">
+              <img src="../../assets/menu_donuts.png"/>
+            </div>
+            <div class="menu__slide">
+              <img src="../../assets/menu_lunch.jpg"/>
+            </div>
+            <div class="menu__slide">
+              <img src="../../assets/menu_coffee.png"/>
+            </div>
+            <div class="menu__slide">
+              <img src="../../assets/menu_sweet.jpg"/>
+            </div>
           </div>
-          <div>
-            <img src="../../assets/menu_lunch.jpg"/>
-          </div>
-          <div>
-            <img src="../../assets/menu_coffee.png"/>
-          </div>
-          <div>
-            <img src="../../assets/menu_sweet.jpg"/>
-          </div>
+        <div class="menu__slider-front">
+          <img src="../../assets/back_menu.png"/>
+        </div>
+        </div>
+        <div class="menu__feature--text-rigth">のんびり過ごす、</div>
+        </div>
+        <div>
+          <button @click="backPage">←</button>
+          <button @click="nextPage">→</button>
         </div>
         <div class="menu__category">
-            <span>ドーナッツ</span>
-            <span>・</span>
-            <span>ランチ</span>
-            <span>・</span>
-            <span>コーヒー</span>
-            <span>・</span>
-            <span>スイーツ</span>
+            <span @click="isCurrentPage(1)">ドーナッツ</span>
+            ・
+            <span @click="isCurrentPage(2)">ランチ</span>
+            ・
+            <span @click="isCurrentPage(3)">コーヒー</span>
+            ・
+            <span @click="isCurrentPage(4)">スイーツ</span>
         </div>
         <div class="menu__summary">
             どんぐりカフェの特製ブレンドコーヒーと、<br/>
@@ -43,9 +48,48 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, computed } from 'vue';
 export default defineComponent({
   name: 'Menu',
+  setup() {
+    let data = reactive({
+      currentPage: 1, //現在のページ
+      totalPage: 4,  //全ページ数
+      pageWidth: 924   //１ページの幅
+      
+    })
+    const nextPage = () => {
+      if(data.currentPage === data.totalPage ) {
+        return;
+      }
+      data.currentPage += 1
+      console.log(data.currentPage)
+    }
+    const backPage = () => {
+      if(data.currentPage === 1 ) {
+        return;
+      }
+      data.currentPage -= 1
+      console.log(data.currentPage)
+    }
+
+    //現在のページをpositionに変換
+    const pagePosition = ():number => {
+      return -data.pageWidth * (data.currentPage -1);
+    };
+
+    const isCurrentPage = (page: number) => {
+      return data.currentPage = page
+    }
+
+    const currentLeft = computed(() => {
+      return String(pagePosition()) + "px"
+    })
+    
+    return {
+      data, backPage, nextPage, pagePosition, isCurrentPage, currentLeft
+    }
+  }
 });
 </script>
 <style lang="scss">
@@ -103,14 +147,14 @@ export default defineComponent({
     top: 0;
     bottom: 0;
 }
-.menu__feature--empty {
-    width: 10%;
-}
 
 .menu__category {
     color: $base_brown;
     font-size: x-large;
     font-weight: 600;
+    span {
+      cursor: pointer;
+    }
 }
 
 .menu__summary {
@@ -137,16 +181,16 @@ export default defineComponent({
    bottom: 0;
    left: 0;
 }
-// .css-slider:before {
-//   width: 500%; /* (n+1)*100% */
-//   background: url(../../assets/menu_donuts.webp) no-repeat,
-//      url(../../assets/menu_lunch.jpg) no-repeat, 
-//      url(../../assets/menu_coffee.png) no-repeat,
-//      url(../../assets/sweet.jpg) repeat-x;
-//   background-position: 75% top, 50% top, 25% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
-//   background-size:  20% auto; /* 100/(n+1)% */
-//   animation: slide 20s ease-in-out infinite;
-// }
+.css-slider:before {
+  width: 500%; /* (n+1)*100% */
+  // background: url(../../assets/menu_donuts.webp) no-repeat,
+  //    url(../../assets/menu_lunch.jpg) no-repeat, 
+  //    url(../../assets/menu_coffee.png) no-repeat,
+  //    url(../../assets/sweet.jpg) repeat-x;
+  background-position: 75% top, 50% top, 25% top, 0% top; /* (n-1)/n*100%, (n-2)/n*100% ... 0% */
+  background-size:  20% auto; /* 100/(n+1)% */
+  animation: slide 20s ease-in-out infinite;
+}
 .css-slider:after {
   right: 0;
 //   background:rgba(0, 0, 0, .25);
@@ -175,8 +219,41 @@ export default defineComponent({
 
 
 //スライダー2/24
+$slider-w: 924px;
+$slider-h: 600px;
+.menu__container {
+  clip-path: inset(0);
+  position: relative;
+  width: $slider-w;
+  height: $slider-h;
+  display: inline-block;
+}
 .menu__slider {
   display: flex;
-  width: 70%;
+  width:$slider-w;
+  height: $slider-h;
+  //---------------
+  transition: left 0.5s ease;
+  position: relative;
+  left: 0;
 }
+.menu__slider-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  img {
+    width: $slider-w;
+    height: $slider-h;
+  }
+}
+.menu__slide {
+  img {
+    width: $slider-w;
+    height: $slider-h;
+  }
+}
+// .menu__slide-img {
+//     width: 100%;
+//     height: auto;
+// }
 </style>
