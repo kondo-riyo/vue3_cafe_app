@@ -2,7 +2,30 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    calendarHTML: ''
+        calendarHTML: '',
+      newsList:[
+          {
+              id: 1,
+              date: '21 JUN. 2022',
+              image: '../assets/cake.jpg',
+              title: '新作ケーキの販売のお知らせ',
+              detail: '新作ケーキの販売のお知らせ！明日(1/22)より、「いちごとベリーのタルト」の販売を開始いたします。昨年よりもタルトをサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+          },
+          {
+              id:2,
+              date: '03 DEC. 2021',
+              image: '../assets/cake.jpg',
+              title: 'かぼちゃタルトの販売のお知らせ',
+              detail: '新作ケーキの販売のお知らせ！明日(1/22)より、「いちごとベリーのタルト」の販売を開始いたします。昨年よりもタルトをサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+          },
+          {
+              id: 3,
+              date: '07 OCT. 2021',
+              image: '../assets/cake.jpg',
+              title: 'りんごパイの販売のお知らせ',
+              detail: '新作ケーキの販売のお知らせ！明日(1/22)より、「いちごとベリーのタルト」の販売を開始いたします。昨年よりもタルトをサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+          },
+      ]
   },
   mutations: {
     calendarMut(state, props) {

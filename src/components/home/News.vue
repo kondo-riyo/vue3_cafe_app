@@ -10,11 +10,11 @@
                     </div>
                     <div class="news__body-card--content-title">新作ケーキの販売のお知らせ</div>
                     <div class="news__body-card--content-detail">
-                        新作ケーキの販売のお知らせ！明日(1/22)より、「いちごとベリーのタルト」の販売を開始いたします。
-                        昨年よりもタルトをサクサクに改良し、よりタルaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        {{data.detail}}
                     </div>
                     <div>
-                        <span class="news__body-card--content-btn">続きを読む</span>
+                        <span v-show="data.showRead==='続きを読む'" @click="showDetail" class="news__body-card--content-btn">{{data.showRead}}</span>
+                        <span v-show="data.showRead==='閉じる'" @click="hideDetail" class="news__body-card--content-btn">{{data.showRead}}</span>
                     </div>
                 </div>
             </div>
@@ -25,17 +25,38 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'News',
   setup() {
       const router = useRouter()
+
+      let data = reactive({
+          detail: '',
+          showRead: '続きを読む',
+      })
       function sendNewsList(){
         router.push('/NewsList')
       }
 
-      return { sendNewsList}
+      let sampleDetail = '新作ケーキの販売のお知らせ！明日(1/22)より、「いちごとベリーのタルト」の販売を開始いたします。昨年よりもタルトをサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+      data.detail = sampleDetail;
+      
+    //   let contentDetail = computed(()=> {
+    //       return data.detail.length > 50 ? (data.detail).slice(0,50)+"…" : data.detail;
+    //   })
+      const showDetail = () => {
+          data.detail = sampleDetail;
+          data.showRead = '閉じる'
+      }
+      const hideDetail = () => {
+        data.detail = data.detail.length > 50 ? (data.detail).slice(0,50)+"…" : data.detail;
+        data.showRead = '続きを読む'
+      }
+
+      hideDetail()
+      return { data, sendNewsList, showDetail, hideDetail }
   }
 });
 </script>
@@ -83,15 +104,18 @@ export default defineComponent({
                 &-detail {
                     font-weight: 600;
                     font-size: x-small;
-                    width: 100px;
+                    width: 300px;
                     margin: 0.5rem 0;
-                    text-overflow: ellipsis;
-                    // white-space: nowrap;
+                    // display: -webkit-box;
+                    // -webkit-box-orient: vertical;
+                    // -webkit-line-clamp: 3;
+                    // overflow: hidden;
                 }
                 &-btn {
                     font-weight: 600;
                     font-size: small;
                     border-bottom: 1px solid black;
+                    cursor: pointer;
                 }   
             }
 
