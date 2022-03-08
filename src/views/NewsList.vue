@@ -19,7 +19,7 @@
                     </div>
                     <!-- {{news.id}} -->
                     <div>
-                        <span v-show="data.showRead==='続きを読む'" @click="showDetail(news.detail)" class="news__body-card--content-btn">{{data.showRead}}</span>
+                        <span v-show="data.showRead==='続きを読む'" @click="showDetail(news)" class="news__body-card--content-btn">{{data.showRead}}</span>
                         <span v-show="data.showRead==='閉じる'" @click="hideDetail(news)" class="news__body-card--content-btn">{{data.showRead}}</span>
                     </div>
                 </div>
@@ -45,6 +45,7 @@ type NewsListType = {
 type DataType = {
   detail: string,
   showRead: string,
+  originalNewsList: NewsListType[],
   newsList: NewsListType[]
 }
 
@@ -54,46 +55,40 @@ export default defineComponent({
       const router = useRouter()
       const store = useStore()
       
-      let newsListFromStore = computed(()=> store.state.newsList)
-      // console.log(newsListFromStore.value[1])
+    let newsListFromStore = computed(()=> store.state.newsList)
 
       let data:DataType
       data = reactive({
           detail: '',
           showRead: '続きを読む',
+          originalNewsList: computed(()=> store.state.newsList),
+          // originalNewsList: store.state.newsList,
           newsList: []
       })
-      data.newsList = newsListFromStore.value
-      // console.log(data.newsList)
+      console.log(data.originalNewsList[0].detail)
+      data.newsList= newsListFromStore.value
 
       function sendNewsList(){
         router.push('/NewsList')
       }
 
-      let sampleDetail = data.newsList[0].detail
-      data.detail = sampleDetail;
-      
-    //   let contentDetail = computed(()=> {
-    //       return data.detail.length > 50 ? (data.detail).slice(0,50)+"…" : data.detail;
-    //   })
-      const showDetail = (detail:string) => {
-        console.log(detail)
-        // let getShowDetail = data.newsList.filter((news)=> news.id === id)
-        // console.log(getShowDetail[0].detail)
-          // data.detail = sampleDetail;
-          // data.showRead = '閉じる'
+      const showDetail = (news: NewsListType) => {
+        // newsListの配列の位置を取得-------
+        let index = data.newsList.findIndex( list => list.id === news.id)
+
+        console.log('show=> '+JSON.stringify(store.state.newsList))
+        
       }
       const hideDetail = (news: NewsListType) => {
-        // console.log(data.newsList.indexOf(id))
+        //newsListの配列の位置を取得-------
+        let index = data.newsList.findIndex( list => list.id === news.id)
+
+        let newDetail = news.detail.length > 50 ? (data.newsList[index].detail).slice(0,50)+"…" : data.newsList[index].detail;
+        news.detail = newDetail
+        data.newsList.splice(index, 1, news)
         
-        // let gethideDetail = data.newsList.filter((news)=> news.id === id)
-        console.log(news)
-        // gethideDetail[0].detail
-        // data.detail = data.detail.length > 50 ? (data.detail).slice(0,50)+"…" : data.detail;
-        // data.showRead = '続きを読む'
       }
-      // console.log(data.newsList.length)
-      hideDetail(2)
+      data.newsList.forEach( news => hideDetail(news))
 
       return { 
         data, sendNewsList, showDetail, hideDetail 
