@@ -7,7 +7,7 @@
         <div></div>
        </div>
         <div class="news__body">
-            <div v-for="news in data.newsList" :key="news.id" class="news__body-card">
+            <div v-for="news in data.originalNewsList" :key="news.id" class="news__body-card">
                 <div class="news__body-card--date">{{news.date}} / News</div>
                 <div class="news__body-card--content">
                     <div>
@@ -18,10 +18,10 @@
                         {{news.detail}}
                     </div>
                     <!-- {{news.id}} -->
-                    <div>
+                    <!-- <div>
                         <span v-show="data.showRead==='続きを読む'" @click="showDetail(news)" class="news__body-card--content-btn">{{data.showRead}}</span>
                         <span v-show="data.showRead==='閉じる'" @click="hideDetail(news)" class="news__body-card--content-btn">{{data.showRead}}</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <!-- {{data.newsList}} -->
@@ -30,7 +30,7 @@
     </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
@@ -55,18 +55,46 @@ export default defineComponent({
       const router = useRouter()
       const store = useStore()
       
-    let newsListFromStore = computed(()=> store.state.newsList)
+    // let newsListFromStore = computed(()=> store.state.newsList.newsList)
 
       let data:DataType
       data = reactive({
+        // data = {
           detail: '',
           showRead: '続きを読む',
-          originalNewsList: computed(()=> store.state.newsList),
+          originalNewsList: [
+            {
+                id: 1,
+                date: '21 JUN. 2022',
+                image: '../assets/cake.jpg',
+                title: '新作ケーキの販売のお知らせ',
+                detail: '新作ケーキの販売のお知らせ！明日(1/22)より、「いちごとベリーのタルト」の販売を開始いたします。昨年よりもタルトをサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+            },
+            {
+                id:2,
+                date: '03 DEC. 2021',
+                image: '../assets/cake.jpg',
+                title: 'かぼちゃのタルトの販売のお知らせ',
+                detail: '新作ケーキの販売のお知らせ！明日(1/22)より、「かぼちゃのタルト」の販売を開始いたします。昨年よりもタルトをサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+            },
+            {
+                id: 3,
+                date: '07 OCT. 2021',
+                image: '../assets/cake.jpg',
+                title: 'りんごのパイの販売のお知らせ',
+                detail: '新作ケーキの販売のお知らせ！明日(1/22)より、「りんごのパイ」の販売を開始いたします。昨年よりもパイ生地をサクサクに改良し、よりタルト好きにはたまらない新作ケーキになっております。ぜひご賞味ください^^'
+            },
+          ],
+          // originalNewsList: computed(()=> store.state.newsList),
           // originalNewsList: store.state.newsList,
-          newsList: []
+          newsList: [],
       })
-      console.log(data.originalNewsList[0].detail)
-      data.newsList= newsListFromStore.value
+        // }
+      console.log(data.originalNewsList)
+      data.originalNewsList.forEach(news => data.newsList.push(news))
+      data.newsList= data.originalNewsList
+      // console.log(data.newsList[0].detail)
+      // console.log(data.originalNewsList[0].detail)
 
       function sendNewsList(){
         router.push('/NewsList')
@@ -75,20 +103,27 @@ export default defineComponent({
       const showDetail = (news: NewsListType) => {
         // newsListの配列の位置を取得-------
         let index = data.newsList.findIndex( list => list.id === news.id)
-
-        console.log('show=> '+JSON.stringify(store.state.newsList))
+        console.log(data.originalNewsList[index].detail)
+        // console.log('show=> '+JSON.stringify(store.state.newsList.newsList))
         
       }
       const hideDetail = (news: NewsListType) => {
         //newsListの配列の位置を取得-------
         let index = data.newsList.findIndex( list => list.id === news.id)
+        console.log(index)
+        console.log(news.id + data.originalNewsList[index].detail)
 
         let newDetail = news.detail.length > 50 ? (data.newsList[index].detail).slice(0,50)+"…" : data.newsList[index].detail;
+        console.log(news.id + data.originalNewsList[index].detail)
+
         news.detail = newDetail
         data.newsList.splice(index, 1, news)
-        
+        console.log(news.id + data.originalNewsList[index].detail)
+
       }
-      data.newsList.forEach( news => hideDetail(news))
+      // data.originalNewsList.forEach( news => hideDetail(news))
+      console.log(data.newsList[0].detail)
+      console.log(data.originalNewsList[0].detail)
 
       return { 
         data, sendNewsList, showDetail, hideDetail 
@@ -146,7 +181,7 @@ export default defineComponent({
                 &-detail {
                     font-weight: 600;
                     font-size: x-small;
-                    width: 300px;
+                    width: 100%;
                     margin: 0.5rem 0;
                     // display: -webkit-box;
                     // -webkit-box-orient: vertical;

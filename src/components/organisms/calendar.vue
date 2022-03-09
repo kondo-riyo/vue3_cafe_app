@@ -42,9 +42,9 @@ export default defineComponent({
       month: 0
     })
     // eslint-disable-next-line
-    let calendarFromStore = computed(() => store.state.calendarHTML)
+    let calendarFromStore = computed(() => store.state.calendar.calendarHTML)
     let calendarHTML = calendarFromStore.value
-    console.log(calendarHTML)
+    console.log('calendar=> '+calendarHTML)
     // onMounted(()=> {
     const date = new Date() //object
     data.value.year = date.getFullYear() //number
