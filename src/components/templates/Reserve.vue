@@ -13,8 +13,8 @@
                             <button v-show="data.nowMonth+2 > data.month" @click="changeMonth(1)" class="calendar__head-btn">＞</button>
                         </div>
                     </div>
-                    <div class="calendar__body"></div>
-                    <!-- {{reserveInfo}} -->
+                    <!-- <div class="calendar__body"></div> -->
+                    <div v-html="data.calendarHTML" class="calendar__body"></div>
                 </div>
             </div>
             <div class="reserve-reserveform">
@@ -25,32 +25,40 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent, ref} from 'vue';
 // import calendar from '../organisms/calendar.vue';
 import reserveForm from '../organisms/reserveForm.vue';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
 
 export default defineComponent({
     name: 'Reserve',
-    // props: [ 'orderInfo' ],
+    props: [ 'orderInfo' ],
     components: {
         // calendar,
         reserveForm
     },
-    setup() {
-    const store = useStore()
+    // setup(props) {
+        // const store = useStore()
+        // store.dispatch('calendarAct')
+        // console.log('props=> '+props.orderInfo)
+        // eslint-disable-next-line
+        // document.querySelector('.calendar__body')!.innerHTML= props.orderInfo
+    // }
+    setup(props) {
+    // const store = useStore()
     let data = ref({
-    //   calendarHTML: '',
+      calendarHTML: props.orderInfo,
       weeks : ['日', '月', '火', '水', '木', '金', '土'],
     //   date: ,
       year: 0,
       nowMonth: 0, 
       month: 0
     })
+    console.log(typeof(props.orderInfo))
     // eslint-disable-next-line
-    let calendarFromStore = computed(() => store.state.calendarHTML)
-    let calendarHTML = calendarFromStore.value
-    console.log(calendarHTML)
+    // let calendarFromStore = computed(() => store.state.calendarHTML)
+    // let calendarHTML = calendarFromStore.value
+    // console.log(calendarHTML)
     // onMounted(()=> {
     const date = new Date() //object
     data.value.year = date.getFullYear() //number
@@ -66,7 +74,7 @@ export default defineComponent({
         console.log('click')
             data.value.month = data.value.month+index
             console.log(data.value.month)
-            calendarHTML = ''
+            data.value.calendarHTML = ''
             const date = new Date() //object
             const startDate = new Date(data.value.year, data.value.month - 1, 1) // 月の最初の日を取得
             const endDate = new Date(data.value.year, data.value.month,  0) // 月の最後の日を取得
@@ -75,37 +83,37 @@ export default defineComponent({
             const lastMonthEndDate = new Date(data.value.year, data.value.month - 1, 0) // 前月の最後の日の情報
             const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
             let dayCount = 1 // 日にちのカウント
-            calendarHTML += '<table class="calendar__body--main">'
+            data.value.calendarHTML += '<table class="calendar__body--main">'
 
             //曜日の行-------
             for (let i = 0; i < data.value.weeks.length; i++) {
-            calendarHTML += '<th>' + data.value.weeks[i] + '</th>'
+            data.value.calendarHTML += '<th>' + data.value.weeks[i] + '</th>'
             }
             //日付の行-------
             for (let w = 0; w < 6; w++) {
-            calendarHTML += '<tr>'
+            data.value.calendarHTML += '<tr>'
             for (let d = 0; d < 7; d++) {
                 if (w == 0 && d < startDay) {
                     // 1行目で1日の曜日の前
                     let num = lastMonthendDayCount - startDay + d + 1
-                    calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+                    data.value.calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
                 } else if (dayCount > endDayCount) {
                     // 末尾の日数を超えた
                     let num = dayCount - endDayCount
-                    calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
+                    data.value.calendarHTML += '<td class="calendar__body--disabled">' + num + '</td>'
                     dayCount++
 
                 }else {
                     //tdタグの中
                     //今日----------
                     if( dayCount===date.getDate() && data.value.month === data.value.nowMonth ) {
-                        calendarHTML += '<td class="calendar__body--today">'
-                        calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
+                        data.value.calendarHTML += '<td class="calendar__body--today">'
+                        data.value.calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
                     }else {
                         //明日以降-----------------
-                        calendarHTML += '<td>'
+                        data.value.calendarHTML += '<td>'
                         // calendarHTML += '<td class="calendar__body--event">'
-                        calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
+                        data.value.calendarHTML += '<div class="calendar__body--dayCount">'+ dayCount +'</div>'
 
                         //予約状況の確認-------------
                         //今月と選択月が一緒か--------
@@ -113,43 +121,43 @@ export default defineComponent({
                             //今日以降＋火曜日-----------
                             if((dayCount > date.getDate())) {
                                 if(d === 2) {
-                                    calendarHTML += '<div>ー</div>'
+                                    data.value.calendarHTML += '<div>ー</div>'
                                 }else {
-                                    calendarHTML += '<div>○</div>'
+                                    data.value.calendarHTML += '<div>○</div>'
                                 }
                             }
                         }else {
                             if(d === 2) {
-                                calendarHTML += '<div>ー</div>'
+                                data.value.calendarHTML += '<div>ー</div>'
                             }else {
-                                calendarHTML += '<div>○</div>'
+                                data.value.calendarHTML += '<div>○</div>'
                             }
                         }
                     }
-                    calendarHTML += '</td>'
+                    data.value.calendarHTML += '</td>'
                     dayCount++
                 }
             }
-            calendarHTML += '</tr>'
+            data.value.calendarHTML += '</tr>'
             }
-            calendarHTML += '</table>'
+            data.value.calendarHTML += '</table>'
             // eslint-disable-next-line
-            document.querySelector('.calendar__body')!.innerHTML = calendarHTML
+            // document.querySelector('.calendar__body')!.innerHTML = calendarHTML
 
     }
 
     return {
-        calendarHTML,
+        // calendarHTML,
         data,
         changeMonth
     }
     }, 
-    mounted() {
+    // mounted() {
 
-    // eslint-disable-next-line
-    document.querySelector('.calendar__body')!.innerHTML = this.calendarHTML
+    // // eslint-disable-next-line
+    // document.querySelector('.calendar__body')!.innerHTML = this.calendarHTML
 
-    },
+    // },
     
 })
 </script>
