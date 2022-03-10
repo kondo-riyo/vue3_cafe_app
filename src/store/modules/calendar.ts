@@ -16,7 +16,8 @@ const getters = {
 
 const makeActions = <T extends ActionTree<State, unknown>>(actions: T): T => actions
 const actions = makeActions({
-    calendarAct({commit}):void {
+    calendarAct({ commit }): void {
+        console.log('calendar')
     let calendarHTML = ''
     const weeks = ['日', '月', '火', '水', '木', '金', '土']
     const date = new Date() //object

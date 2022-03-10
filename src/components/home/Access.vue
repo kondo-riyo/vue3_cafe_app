@@ -32,10 +32,11 @@
                     <calendar/>
                 </div>
             </div>
-            <button @click="sendReserve">クリック</button>
+            <!-- <button @click="sendReserve">クリック</button> -->
         </div>
+        <!-- <Reserve v-show="showReserve" @close="closeReserve"/> -->
         <Reserve 
-            :orderInfo="reserveInfo"
+            :orderInfo="data.reserveInfo"
             v-show="showReserve"
             @close="closeReserve"
         >
@@ -43,7 +44,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, reactive } from 'vue';
 import { useStore } from 'vuex';
 import calendar from '../organisms/calendar.vue';
 import Reserve from '../templates/Reserve.vue';
@@ -63,6 +64,10 @@ export default defineComponent({
     const store = useStore()
 
     //data----------------------
+    let data = reactive({
+        reserveInfo: computed(() => store.state.calendarHTML),
+
+    })
     // let data = ref({
     //   myLatLng:{lat: 35.69398953161943, lng: 139.7075547373426},
     //   showReserve: false,
@@ -97,7 +102,8 @@ export default defineComponent({
     //     mapRef
     // }
     return {
-        calendarHTML: computed(() => store.state.calendarHTML)
+        // calendarHTML: computed(() => store.state.calendarHTML)
+        data
     }
 
   },
@@ -105,7 +111,6 @@ export default defineComponent({
     return {
       myLatLng:{lat: 35.69398953161943, lng: 139.7075547373426},
       showReserve: false,
-      reserveInfo: '',
 
     }
   },
@@ -125,7 +130,6 @@ export default defineComponent({
         });
       }
     }, 500);  
-
     // this.$store.dispatch('calendarAct')
     },
     methods: {
@@ -133,8 +137,8 @@ export default defineComponent({
             this.showReserve = false
         },
         ReserveOpen() {
-            this.reserveInfo = this.calendarHTML
-            console.log(this.reserveInfo)
+            // this.reserveInfo = this.calendarHTML
+            // console.log(this.reserveInfo)
             this.showReserve = true
         },
         sendReserve() {
@@ -151,89 +155,135 @@ export default defineComponent({
 .access {
     background-color: $base_cream;
     // height: 50rem;
-}
 
-.access__title {
-    color: $base_brown;
-    font-size: xxx-large;
-    font-weight: bold;
-}
-
-.access__body {
-    display: flex;
-    margin: 1rem 17rem;
-}
-.access__body--shop {
-    width: 40%;
-    margin: 1rem;
-}
-.access__body--shop-img {
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 10px;
-}
-.access__body-content {
-    width: 60%;
-    margin: 1rem;
-    color: $base_brown;
-    font-size: small;
-    font-weight: 600;
-    text-align: start;
-    div {
-        margin: 0 0 0.5rem 0;
+    &__title {
+        color: $base_brown;
+        font-size: xxx-large;
+        font-weight: bold;
     }
-}
-.access__body-content--img {
-    width: 55%;
+
+    &__body {
+        display: flex;
+        margin: 1rem 17rem;
+
+        &--shop {
+            width: 40%;
+            margin: 1rem;
+            &-img {
+                width: 100%;
+                height: auto;
+                margin: 0 auto;
+                border-radius: 10px;
+            }
+        }
+
+        &-content {
+            width: 60%;
+            margin: 1rem;
+            color: $base_brown;
+            font-size: small;
+            font-weight: 600;
+            text-align: start;
+            div {
+                margin: 0 0 0.5rem 0;
+            }
+            &--img {
+                width: 100%;
+            }
+        }
+    }
+
+    &__foot {
+        display: flex;
+        width: 100%;
+        margin: 0 auto;
+
+        &-map {
+            width: 60%;
+            &--img {
+                width: 100%;
+                height: 550px;
+            }
+        }
+
+        &-reserve {
+            width: 40%;
+            background-color: $base_of;
+
+            &--head {
+                background-color: $base_pink_brown;
+                // height: 100px;
+                color: white;
+                text-align: start;
+                padding: 0.3rem;
+                transition: 0.5s;
+                div {
+                    font-weight: 700;
+                    font-size: x-large;
+                    text-align: center;
+                    margin: 0 0 0.5rem 0;;
+                }
+                span {
+                    font-weight: 600;
+                    font-size: x-small;
+                    text-align: start;
+                }
+
+                &:hover {
+                    background-color: $base_pink_brown-30;
+                    color: $base_brown;
+                }
+            }
+        }
+    }
 }
 
 //foot-----------------------
-.access__foot {
-    display: flex;
-    width: 100%;
-    margin: 0 auto;
-}
-.access__foot-map {
-    width: 60%;
-    // margin: 0.3rem;
-}
-.access__foot-map--img {
-    width: 100%;
-    height: 550px;
-}
-.access__foot-reserve {
-     width: 40%;
-     background-color: $base_of;
-    // margin: 0.3rem 0.3rem 0.6rem 0.3rem;
-}
-.access__foot-reserve--head {
-    background-color: $base_pink_brown;
-    // height: 100px;
-    color: white;
-    text-align: start;
-    padding: 0.3rem;
-    transition: 0.5s;
-    div {
-        font-weight: 700;
-        font-size: x-large;
-        text-align: center;
-        margin: 0 0 0.5rem 0;;
-    }
-    span {
-        font-weight: 600;
-        font-size: x-small;
-        text-align: start;
-    }
-}
-.access__foot-reserve--head:hover {
-    background-color: $base_pink_brown-30;
-    color: $base_brown;
-}
+// .access__foot {
+//     display: flex;
+//     width: 100%;
+//     margin: 0 auto;
+// }
+// .access__foot-map {
+//     width: 60%;
+//     // margin: 0.3rem;
+// }
+// .access__foot-map--img {
+//     width: 100%;
+//     height: 550px;
+// }
+// .access__foot-reserve {
+//      width: 40%;
+//      background-color: $base_of;
+//     // margin: 0.3rem 0.3rem 0.6rem 0.3rem;
+// }
+// .access__foot-reserve--head {
+//     background-color: $base_pink_brown;
+//     // height: 100px;
+//     color: white;
+//     text-align: start;
+//     padding: 0.3rem;
+//     transition: 0.5s;
+//     div {
+//         font-weight: 700;
+//         font-size: x-large;
+//         text-align: center;
+//         margin: 0 0 0.5rem 0;;
+//     }
+//     span {
+//         font-weight: 600;
+//         font-size: x-small;
+//         text-align: start;
+//     }
+// }
+// .access__foot-reserve--head:hover {
+//     background-color: $base_pink_brown-30;
+//     color: $base_brown;
+// }
 
-.access__foot-reserve--body {
+// .access__foot-reserve--body {
 
-}
+// }
 
 // .calendar__body {
 //     width: 100%;

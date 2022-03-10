@@ -14,13 +14,13 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import { defineComponent, computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 export default defineComponent({
     name: 'calendar',
     // props: [ 'reserveInfo' ],
-    data() {
-        return {
+    // data() {
+    //     return {
       //カレンダー----------------
     //   calendarHTML: '',
     //   weeks : ['日', '月', '火', '水', '木', '金', '土'],
@@ -29,8 +29,8 @@ export default defineComponent({
     //   nowMonth: 0, 
     //   month: 0
 
-        }
-    },
+    //     }
+    // },
     setup() {
     const store = useStore()
     let data = ref({
@@ -42,24 +42,28 @@ export default defineComponent({
       month: 0
     })
     // eslint-disable-next-line
-    let calendarFromStore = computed(() => store.state.calendar.calendarHTML)
+    let calendarFromStore = computed(() => store.state.calendarHTML)
     let calendarHTML = calendarFromStore.value
-    console.log('calendar=> '+calendarHTML)
+    // console.log('calendar=> '+calendarHTML)
     // onMounted(()=> {
     const date = new Date() //object
     data.value.year = date.getFullYear() //number
     data.value.nowMonth = date.getMonth() + 1 //number
     data.value.month = data.value.nowMonth
-    console.log(data.value.year)
+    // console.log(data.value.year)
+    // onMounted(()=> {
+    // // eslint-disable-next-line
+    //     document.querySelector('.calendar__body')!.innerHTML= calendarHTML.value
+    // })
     // eslint-disable-next-line
     // document.querySelector('.calendar__body')!.innerHTML= calendarHTML.value
     // })
-    console.log(data.value.year)
+    // console.log(data.value.year)
     
     const changeMonth = (index:number) => {
         console.log('click')
             data.value.month = data.value.month+index
-            console.log(data.value.month)
+            // console.log(data.value.month)
             calendarHTML = ''
             const date = new Date() //object
             const startDate = new Date(data.value.year, data.value.month - 1, 1) // 月の最初の日を取得
@@ -131,7 +135,7 @@ export default defineComponent({
             document.querySelector('.calendar__body')!.innerHTML = calendarHTML
 
     }
-
+    // changeMonth(0)
     return {
         calendarHTML,
     // eslint-disable-next-line
